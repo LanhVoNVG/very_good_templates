@@ -36,6 +36,14 @@ automations:
       - action: explain-code-experts@v1
         args:
           gt: 10
+  safe_changes:
+    if:
+      - {{ is.docs or is.tests or is.asset or is.formatting }}
+    run: 
+      - action: add-label@v1
+        args:
+          label: 'safe-changes'
+      - action: approve@v1
 
 # +----------------------------------------------------------------------------+
 # | Custom Expressions                                                         |
