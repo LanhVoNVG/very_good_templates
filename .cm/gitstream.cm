@@ -36,6 +36,14 @@ automations:
       - action: explain-code-experts@v1
         args:
           gt: 10
+  safe_changes:
+    if:
+      - {{ is.docs or is.tests or is.asset or is.formatting }}
+    run: 
+      - action: add-label@v1
+        args:
+          label: 'safe-changes'
+      - action: approve@v1
 
 # +----------------------------------------------------------------------------+
 # | Custom Expressions                                                         |
@@ -53,3 +61,9 @@ colors:
   red: 'b60205'
   yellow: 'fbca04'
   green: '0e8a16'
+
+is:
+  docs: {{ files | allDocs }}
+  tests: {{ files | allTests }}
+  asset: {{ files | match(regex=r/\.(png|svg|gif|css)$/) | every }}
+  formatting: {{ source.diff.files | isFormattingChange }}
