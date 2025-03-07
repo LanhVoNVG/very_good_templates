@@ -1,5 +1,4 @@
 # -*- mode: yaml -*-
-# This example configuration provides basic automations to get started with gitStream.
 # View the gitStream quickstart for more examples: https://docs.gitstream.cm/examples/
 manifest:
   version: 1.0
@@ -14,6 +13,7 @@ automations:
         args:
           label: "{{ calc.etr }} min review"
           color: {{ colors.red if (calc.etr >= 20) else (colors.yellow if (calc.etr >= 5) else colors.green) }}
+
   # Inform PR authors when they fail to reference Jira tickets in the PR title or description.
   label_missing_jira_info:
     if:
@@ -26,8 +26,8 @@ automations:
       - action: add-comment@v1
         args:
           comment: |
-            This PR is missing a Jira ticket reference in the title or description.
-            Please add a Jira ticket reference to the title or description of this PR.
+            Missing Jira ticket reference. Please add it to the title or description.
+
   # Post a comment that lists the best experts for the files that were modified.
   explain_code_experts:
     if:
@@ -35,21 +35,19 @@ automations:
     run:
       - action: explain-code-experts@v1
         args:
-          gt: 10
+          gt: 1
+
+  # Add label and approve changes to resources that could be considered safe changes.
   safe_changes:
     if:
-      - {{ is.docs or is.tests or is.asset or is.formatting }}
+      - {{ is.docs or is.asset or is.formatting }}
     run: 
       - action: add-label@v1
         args:
           label: 'safe-changes'
       - action: approve@v1
 
-# +----------------------------------------------------------------------------+
-# | Custom Expressions                                                         |
-# | https://docs.gitstream.cm/how-it-works/#custom-expressions                 |
-# +----------------------------------------------------------------------------+
-
+# Custom Expressions: https://docs.gitstream.cm/how-it-works/#custom-expressions 
 calc:
   etr: {{ branch | estimatedReviewTime }}
 
@@ -64,6 +62,5 @@ colors:
 
 is:
   docs: {{ files | allDocs }}
-  tests: {{ files | allTests }}
-  asset: {{ files | match(regex=r/\.(png|svg|gif|css)$/) | every }}
+  asset: {{ files | match(regex=r/\.(png|svg|jpeg|webp|arb)$/) | every }}
   formatting: {{ source.diff.files | isFormattingChange }}
