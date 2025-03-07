@@ -1,4 +1,4 @@
-# This is a demo for App Team SW Design Review
+# This is a demo for gitStream in App Team SW Design Review
 
 [![Very Good Ventures][logo_white]][very_good_ventures_link_dark]
 [![Very Good Ventures][logo_black]][very_good_ventures_link_light]
