@@ -44,8 +44,13 @@ automations:
     run: 
       - action: add-label@v1
         args:
-          label: 'safe-changes'
+          label: 'Safe Change'
+          color: {{ colors.green }}
       - action: approve@v1
+      - action: add-comment@v1
+        args:
+          comment: |
+            This PR is considered a safe change and has been automatically approved.
 
 # Custom Expressions: https://docs.gitstream.cm/how-it-works/#custom-expressions 
 calc:
